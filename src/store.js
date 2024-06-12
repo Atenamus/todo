@@ -4,7 +4,6 @@ import zukepper from "zukeeper";
 const useTodoStore = create(
   zukepper((set) => ({
     todos: [],
-    editable: false,
     addTodo: (newTodo) => {
       set((state) => ({ todos: [...state.todos, newTodo] }));
     },
@@ -14,10 +13,13 @@ const useTodoStore = create(
       }));
     },
     updateTodo: (newTodo, index) => {
-      set((state) => ({ todos: [(state.todos[index] = newTodo)] }));
-    },
-    setEditable: () => {
-      set((state) => ({ editable: !state.editable }));
+      set((state) => ({
+        todos: [
+          ...state.todos.slice(0, index),
+          newTodo,
+          ...state.todos.slice(index + 1),
+        ],
+      }));
     },
   }))
 );

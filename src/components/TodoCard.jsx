@@ -4,7 +4,8 @@ import useTodoStore from "../store.js";
 import { Pencil, Trash, Check } from "lucide-react";
 export default function TodoCard({ todo, index }) {
   const [newTodo, setNewTodo] = useState(todo);
-  const { updateTodo, deleteTodo, editable, setEditable } = useTodoStore();
+  const [editable, setEditable] = useState(false);
+  const { updateTodo, deleteTodo } = useTodoStore();
   return (
     <div>
       <li className="todoItem">
@@ -13,7 +14,6 @@ export default function TodoCard({ todo, index }) {
             value={newTodo}
             readOnly={!editable}
             onChange={(e) => {
-              console.log(e.target.value);
               setNewTodo(e.target.value);
             }}
           />
@@ -22,14 +22,14 @@ export default function TodoCard({ todo, index }) {
           {!editable ? (
             <Pencil
               onClick={() => {
-                setEditable();
+                setEditable(!editable);
               }}
             />
           ) : (
             <Check
               onClick={() => {
                 updateTodo(newTodo, index);
-                setEditable();
+                setEditable(!editable);
               }}
             />
           )}
