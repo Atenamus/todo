@@ -1,16 +1,38 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import useTodoStore from "../store.js";
-import { Pencil, Trash } from "lucide-react";
-export default function TodoCard({ children, index }) {
-  const { deleteTodo } = useTodoStore();
+import { Pencil, Trash, Check } from "lucide-react";
+export default function TodoCard({ todo, index }) {
+  const [newTodo, setNewTodo] = useState(todo);
+  const { updateTodo, deleteTodo, editable, setEditable } = useTodoStore();
   return (
     <div>
       <li className="todoItem">
-        {children}
+        <p>
+          <input
+            value={newTodo}
+            readOnly={!editable}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setNewTodo(e.target.value);
+            }}
+          />
+        </p>
         <div className="actionsContainer">
-          <button>
-            <Pencil />
-          </button>
+          {!editable ? (
+            <Pencil
+              onClick={() => {
+                setEditable();
+              }}
+            />
+          ) : (
+            <Check
+              onClick={() => {
+                updateTodo(newTodo, index);
+                setEditable();
+              }}
+            />
+          )}
           <button
             onClick={() => {
               deleteTodo(index);

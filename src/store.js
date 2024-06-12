@@ -13,6 +13,12 @@ const useTodoStore = create(
         todos: state.todos.filter((_, todoIndex) => todoIndex !== index),
       }));
     },
+    updateTodo: (newTodo, index) => {
+      set((state) => ({ todos: [(state.todos[index] = newTodo)] }));
+    },
+    setEditable: () => {
+      set((state) => ({ editable: !state.editable }));
+    },
   }))
 );
 window.store = useTodoStore;
